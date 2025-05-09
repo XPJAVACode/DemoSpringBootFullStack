@@ -4,8 +4,10 @@ import java.util.Collection;
 
 import org.hibernate.annotations.ManyToAny;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -36,7 +38,7 @@ public class UserEntity {
 	@Column(nullable = false, unique = true)
 	private String encryptedPassword;
 	
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",
 				joinColumns=@JoinColumn(name="users_id", referencedColumnName = "id"),
 				inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))

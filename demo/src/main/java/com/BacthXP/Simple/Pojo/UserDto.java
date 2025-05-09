@@ -1,6 +1,7 @@
 package com.BacthXP.Simple.Pojo;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public class UserDto implements Serializable{
 
@@ -12,7 +13,15 @@ public class UserDto implements Serializable{
 	private String email;
 	private String password;
 	private String encryptedPassword;
+	private Collection<String> roles;
 	
+	
+	public Collection<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(Collection<String> roles) {
+		this.roles = roles;
+	}
 	public String getPassword() {
 		return password;
 	}

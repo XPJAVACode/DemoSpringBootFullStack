@@ -54,7 +54,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		// After successful authentication generate token
-		String userEmail = ((User) authResult.getPrincipal()).getUsername();
+		String userEmail = ((UserPrincipal) authResult.getPrincipal()).getUsername();
 		UserDto userDto =  ((UserService)SpringApplicationContext.getBean("userServiceImpl")).getuserDetailsByEmail(userEmail);
 		
 		String commonKey = SecurityConstants.getTokenSecret();

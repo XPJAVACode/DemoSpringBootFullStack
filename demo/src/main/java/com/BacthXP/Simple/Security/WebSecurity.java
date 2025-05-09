@@ -46,6 +46,7 @@ public class WebSecurity{
 		.permitAll()
 		.requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
 		.permitAll()
+		.requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN")
 		.anyRequest().authenticated())
 		.addFilter(new AuthenticationFilter(authenticationManager)) 
 		.addFilter(new AuthorizationFilter(authenticationManager))

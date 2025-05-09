@@ -48,7 +48,8 @@ public class InitialSetup {
 		AuthorityEntity deleteAuthority = createAuthority("DELETE_AUTHORITY");
 		
 		createRole(Roles.ROLE_USER.name(), Arrays.asList(readAuthority, writeAuthority));
-		RoleEntity roleAdmin = createRole(Roles.ROLE_ADMIN.name(), Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
+		RoleEntity roleAdmin = createRole(Roles.ROLE_ADMIN.name(), 
+				Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 		
 		if(roleAdmin == null) return;
 		

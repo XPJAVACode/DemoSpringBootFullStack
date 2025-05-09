@@ -1,6 +1,8 @@
 package com.BacthXP.Simple.ServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -12,9 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.BacthXP.Simple.Entity.RoleEntity;
 import com.BacthXP.Simple.Entity.UserEntity;
 import com.BacthXP.Simple.Pojo.UserDto;
+import com.BacthXP.Simple.Repository.RoleRepository;
 import com.BacthXP.Simple.Repository.UserRepository;
+import com.BacthXP.Simple.Security.UserPrincipal;
 import com.BacthXP.Simple.Service.UserService;
 
 @Service
@@ -25,6 +30,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	RoleRepository roleRepository;
 	
 	@Override
 	public UserDto cteateUser(UserDto userDto) {
@@ -37,6 +45,15 @@ public class UserServiceImpl implements UserService{
 		
 		UserEntity entity = mapper.map(userDto, UserEntity.class);
 		
+		Collection<RoleEntity> rolesEntity = new HashSet<>();
+		for(String role: userDto.getRoles()) {
+			RoleEntity roleEntity =  roleRepository.findByName(role);
+			if(roleEntity != null) {
+				rolesEntity.add(roleEntity);
+			}
+		}
+		
+		entity.setRoles(rolesEntity);
 		userRepository.save(entity);
 		
 		UserDto returnValue = mapper.map(entity, UserDto.class);
@@ -49,8 +66,10 @@ public class UserServiceImpl implements UserService{
 		UserEntity entity = userRepository.findByEmail(email);
 		if(entity == null) throw new UsernameNotFoundException("Email ID not found");
 		
-		return new User(entity.getEmail(), entity.getEncryptedPassword()
-				,true, true, true, true, new ArrayList<>());
+//		return new User(entity.getEmail(), entity.getEncryptedPassword()
+//				,true, true, true, true, new ArrayList<>());
+		
+		return new UserPrincipal(entity);
 	}
 
 	@Override
