@@ -12,6 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.BacthXP.Simple.Entity.UserEntity;
+import com.BacthXP.Simple.Repository.UserRepository;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -22,9 +25,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter{
 
+	UserRepository userRepository;
 	
-	public AuthorizationFilter(AuthenticationManager authenticationManager) {
+	public AuthorizationFilter(AuthenticationManager authenticationManager,
+			UserRepository userRepository) {
 		super(authenticationManager);
+		this.userRepository = userRepository;
 	}
 	
 	@Override
@@ -58,7 +64,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
 		
 		String userID = claims.getSubject();
 		if(userID != null) {
-			return new UsernamePasswordAuthenticationToken(userID, null, new ArrayList<>());
+			UserEntity usereEntity =  userRepository.findByUserId(userID);
+			UserPrincipal userPrincipal = new UserPrincipal(usereEntity);
+			return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
 		}
 		
 		return null;

@@ -3,10 +3,10 @@ package com.BacthXP.Simple.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,8 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.BacthXP.Simple.Repository.UserRepository;
 import com.BacthXP.Simple.Service.UserService;
 
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 @EnableWebSecurity
 public class WebSecurity{
@@ -24,6 +26,8 @@ public class WebSecurity{
 	private UserService userService;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -46,10 +50,10 @@ public class WebSecurity{
 		.permitAll()
 		.requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
 		.permitAll()
-		.requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN")
+		//.requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN")
 		.anyRequest().authenticated())
 		.addFilter(new AuthenticationFilter(authenticationManager)) 
-		.addFilter(new AuthorizationFilter(authenticationManager))
+		.addFilter(new AuthorizationFilter(authenticationManager, userRepository))
 		.authenticationManager(authenticationManager)
 		.sessionManagement((session)-> session
      		   .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -21,5 +21,6 @@ public class TodoController {
 	public List<Todo> getTodosFromController(){
 		return todoService.getAllTodosFromServiceImpl();
 	}
-	
+	//getAllTodos(everyone), createTodo(request can be sent only by ADMIN and logged in user, response should be accessed only by admin), 
+	//deleteTodo(only admin), updateTodo(logged in user and admin)
 }
