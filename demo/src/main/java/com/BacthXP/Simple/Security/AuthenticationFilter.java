@@ -3,17 +3,14 @@ package com.BacthXP.Simple.Security;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.BacthXP.Simple.SpringApplicationContext;
