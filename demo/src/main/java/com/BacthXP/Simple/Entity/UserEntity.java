@@ -1,8 +1,8 @@
 package com.BacthXP.Simple.Entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-import org.hibernate.annotations.ManyToAny;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,7 +45,17 @@ public class UserEntity {
 				inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))
 	private Collection<RoleEntity> roles;
 	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	private List<TodoEntity> todos = new ArrayList<>();
 	
+	public List<TodoEntity> getTodos() {
+		return todos;
+	}
+
+	public void setTodos(List<TodoEntity> todos) {
+		this.todos = todos;
+	}
+
 
 	public Collection<RoleEntity> getRoles() {
 		return roles;

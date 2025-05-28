@@ -1,6 +1,5 @@
 package com.BacthXP.Simple.Pojo;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -9,9 +8,9 @@ public class Todo {
 	private int id;
 	private String name;
 	private String description;
-	private Date startTime;
-	private Date endTime;
-	public Todo(int id, String name, String description, Date startTime, Date endTime) {
+	private Timestamp startTime;
+	private Timestamp endTime;
+	public Todo(int id, String name, String description, Timestamp startTime, Timestamp endTime) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -37,16 +36,16 @@ public class Todo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 	@Override

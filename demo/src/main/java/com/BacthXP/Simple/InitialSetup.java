@@ -1,5 +1,10 @@
 package com.BacthXP.Simple;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -8,17 +13,19 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.BacthXP.Simple.Entity.AuthorityEntity;
 import com.BacthXP.Simple.Entity.RoleEntity;
+import com.BacthXP.Simple.Entity.TodoEntity;
 import com.BacthXP.Simple.Entity.UserEntity;
 import com.BacthXP.Simple.Repository.AuthorityRepository;
 import com.BacthXP.Simple.Repository.RoleRepository;
+import com.BacthXP.Simple.Repository.TodoRepository;
 import com.BacthXP.Simple.Repository.UserRepository;
 import com.BacthXP.Simple.Shared.Roles;
 import com.BacthXP.Simple.Shared.Utills;
 
-import jakarta.transaction.Transactional;
 
 @Component
 public class InitialSetup {
@@ -31,6 +38,9 @@ public class InitialSetup {
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	TodoRepository todoRepository;
 	
 	@Autowired
 	Utills utills;
@@ -65,6 +75,11 @@ public class InitialSetup {
 		if(alreadyStoredAdminUser == null) {
 			userRepository.save(adminUser);
 		}
+		System.out.println("Adding todos");
+		//Assuming admin user has many todos
+		createTodos(adminUser, "Learn Java");
+		createTodos(adminUser, "Learn Javscript");
+		createTodos(adminUser, "Learn Angular");
 	}
 	
 	@Transactional
@@ -86,5 +101,17 @@ public class InitialSetup {
 			roleRepository.save(entity);
 		}
 		return entity;
+	}
+	
+	@Transactional
+	private void createTodos(UserEntity adminUser, String name) {
+		TodoEntity todo = new TodoEntity();
+		todo.setName(name);
+		todo.setIsCompleted("false");
+		todo.setDescription("Learning is a key path to success");
+		todo.setStartTime(Timestamp.valueOf(LocalDateTime.now()));
+		todo.setEndTime(Timestamp.valueOf(LocalDateTime.now().plusDays(5)));
+		todo.setUserEntity(adminUser);
+		todoRepository.save(todo);
 	}
 }

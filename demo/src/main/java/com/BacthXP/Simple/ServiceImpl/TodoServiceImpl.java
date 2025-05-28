@@ -6,26 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.BacthXP.Simple.Annotation.ExecutionTime;
+import com.BacthXP.Simple.Entity.TodoEntity;
 import com.BacthXP.Simple.Pojo.Todo;
 import com.BacthXP.Simple.Repository.TodoInmemoryRepository;
+import com.BacthXP.Simple.Repository.TodoRepository;
 import com.BacthXP.Simple.Service.TodoService;
 
 @Service
 public class TodoServiceImpl implements TodoService{
 
 	@Autowired
-	TodoInmemoryRepository todoInMemoryRepository;
+	TodoRepository todoRepository;
 	
-	@ExecutionTime
-	@Override
-	public List<Todo> getAllTodosFromServiceImpl() {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return this.todoInMemoryRepository.getAllTodosFromRepository();
+	public List<TodoEntity> getAllTodos(Long userId) {
+		return todoRepository.findTodosByUserId(userId);
 	}
 
 	@Override

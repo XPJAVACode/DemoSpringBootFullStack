@@ -13,9 +13,9 @@ public class TodoInmemoryRepository {
  //inmemory logic
   private static final Map<Integer, Todo> map = new HashMap<>();
  
-  static {
-	  map.put(1, new Todo(1, "Core Java", "Need to learn", new Date(0), new Date(0)));
-  }
+//  static {
+//	  map.put(1, new Todo(1, "Core Java", "Need to learn", new Date(0), new Date(0)));
+//  }
   
   public List<Todo> getAllTodosFromRepository(){
 	  //return new ArrayList<>(map.values());
